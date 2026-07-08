@@ -13,11 +13,27 @@ jobs:
       - name: 拉取仓库
         uses: actions/checkout@v4
 
-      - name: 获取IP并修改名称
+      - name: 获取IP并检查变化
         run: |
-          curl -s https://raw.githubusercontent.com/love-ztm/cfip/refs/heads/main/ubest_ips.txt > temp.txt 
+          curl -s https://raw.githubusercontent.com/love-ztm/cfip/refs/heads/main/ubest_ips.txt > temp.txt
           curl -s https://cf.junzhen.qzz.io/best_ips.txt >> temp.txt
-          sed -E 's/#([A-Za-z]+).*/#\1李无敌/' temp.txt > liwudi.txt
+
+          sed -E 's/#([A-Za-z]+).*/#\1李无敌/' temp.txt > new.txt
+
+          if [ -f liwudi.txt ]; then
+            sed '1,2d' liwudi.txt > old.txt
+          else
+            touch old.txt
+          fi
+
+          if cmp -s new.txt old.txt; then
+            echo "IP没有变化"
+            exit 0
+          fi
+
+          echo "#$(TZ='Asia/Shanghai' date '+%m-%d %H:%M:%S')" > liwudi.txt
+          echo "" >> liwudi.txt
+          cat new.txt >> liwudi.txt
 
       - name: 提交更新
         run: |
