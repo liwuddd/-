@@ -31,8 +31,9 @@ jobs:
             exit 0
           fi
 
-          echo "#$(TZ='Asia/Shanghai' date '+%m-%d %H:%M:%S')" > liwudi.txt
-          echo "" >> liwudi.txt
+          TIME=$(TZ='Asia/Shanghai' date '+%m-%d %HH')
+
+          echo "192.0.2.1:443#$TIME" > liwudi.txt
           cat new.txt >> liwudi.txt
 
       - name: 提交更新
