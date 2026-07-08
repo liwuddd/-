@@ -1,0 +1,31 @@
+name: 自动更新李无敌节点
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v4
+
+      - name: 获取IP并修改名称
+        run: |
+          curl -s https://raw.githubusercontent.com/love-ztm/cfip/refs/heads/main/ubest_ips.txt \
+          | awk -F "#" '{print $1"#李无敌"}' \
+          > liwudi.txt
+
+      - name: 提交更新
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git add liwudi.txt
+
+          git commit -m "自动更新节点" || exit 0
+
+          git push
