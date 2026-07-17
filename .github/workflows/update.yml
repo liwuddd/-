@@ -19,7 +19,7 @@ jobs:
           curl -s https://cf.junzhen.qzz.io/best_ips.txt >> temp.txt
           curl -s https://bestcf.pages.dev/cmliu/all.txt >> temp.txt
 
-          sed -E 's/^([^#]+)#([A-Z]{2}).*/\1#\2 李无敌/; s/^([^#]+)#.* ([A-Z]{2}) \|.*/\1#\2 李无敌/' temp.txt > new.txt
+          sed -E 's/^([^#]+)#([A-Z]{2}) .*/\1#\2 李无敌/;s/^([^#]+)#CM优选 \| .* ([A-Z]{2}) \|.*/\1#\2 李无敌/' temp.txt > new.txt
 
           if [ -f liwudi.txt ]; then
             sed '1,2d' liwudi.txt > old.txt
